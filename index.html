@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>铚€搴勮弻姹ょ伀閿?- 鎵爜鐐归</title>
+    <title>蜀庄菌汤火锅 - 扫码点餐</title>
     <style>
         * {
             margin: 0;
@@ -167,55 +167,56 @@
     <div class="container" id="app">
         <div class="loading">
             <div class="spinner"></div>
-            <p>姝ｅ湪璇嗗埆鎮ㄧ殑璐﹀彿...</p>
+            <p>正在识别您的账号...</p>
         </div>
     </div>
 
     <script>
-        // 妫€娴嬭繍琛岀幆澧?
+        // 检测运行环境
         const userAgent = navigator.userAgent.toLowerCase();
         const isWeixin = userAgent.indexOf('micromessenger') > -1;
         const isDouyin = userAgent.indexOf('douyin') > -1 || userAgent.indexOf('bytedance') > -1;
         const isAlipay = userAgent.indexOf('alipay') > -1;
 
-        // 鍟嗗閰嶇疆淇℃伅
+        // 商家配置信息
         const shopConfig = {
-            name: '铚€搴勮弻姹ょ伀閿?,
-            address: '娌冲寳鐪侀偄鍙板競鍐呬笜鍘?,
+            name: '蜀庄菌汤火锅',
+            address: '河北省邢台市内丘县',
             phone: '138****8888',
-            description: '姝ｅ畻鑿屾堡鐏攨锛屽吇鐢熷張缇庡懗',
+            description: '正宗菌汤火锅，养生又美味',
             menu: [
-                { name: '鎷涚墝鑿屾堡閿呭簳', price: '48鍏? },
-                { name: '鏂伴矞鑲ョ墰', price: '38鍏? },
-                { name: '鎵嬫墦鐗涜倝涓?, price: '28鍏? },
-                { name: '椴滆弻鎷肩洏', price: '32鍏? },
-                { name: '鐗硅壊灏忔枡', price: '6鍏?浣? }
+                { name: '招牌菌汤锅底', price: '48元' },
+                { name: '新鲜肥牛', price: '38元' },
+                { name: '手打牛肉丸', price: '28元' },
+                { name: '鲜菌拼盘', price: '32元' },
+                { name: '特色小料', price: '6元/位' }
             ],
-            // 缇庡洟/鎶栭煶璺宠浆閾炬帴锛堥渶瑕佹浛鎹负鐪熷疄閾炬帴锛?
-            meituanUrl: 'https://i.meituan.com/qqq', // 鏇挎崲涓虹湡瀹炵編鍥㈠洟璐摼鎺?
-            douyinUrl: 'https://v.douyin.com/xxxxxx/', // 鏇挎崲涓虹湡瀹炴姈闊充富椤甸摼鎺?
-            douyinShopUrl: 'https://awp-htsaf/e04c4G9/' // 鏇挎崲涓虹湡瀹炴姈闊冲洟璐摼鎺?
+            // 商家跳转链接配置
+            caoliaoUrl: 'https://qr61.cn/oFWnKe/qLJrevn', // 草料模板页（微信）
+            meituanUrl: 'http://dpurl.cn/5JRuksxz', // 美团店铺
+            douyinUrl: 'https://v.douyin.com/ZhrpJBZ5Tv8/', // 抖音主页
+            douyinShopUrl: 'https://v.douyin.com/ZhrpJBZ5Tv8/' // 抖音团购
         };
 
-        // 鏍规嵁鐜鑷姩璺宠浆
+        // 根据环境自动跳转
         function autoRedirect() {
-            // 鎶栭煶鍐呯疆娴忚鍣?- 璺宠浆鎶栭煶鍥㈣喘
+            // 抖音内置浏览器 - 跳转抖音团购
             if (isDouyin) {
-                showDouyinPage();
+                window.location.href = shopConfig.douyinShopUrl;
                 return;
             }
             
-            // 寰俊鍐呯疆娴忚鍣?- 鏄剧ず鐐归椤甸潰
+            // 微信内置浏览器 - 跳转草料模板页
             if (isWeixin) {
-                showWeixinPage();
+                window.location.href = shopConfig.caoliaoUrl;
                 return;
             }
             
-            // 鍏朵粬娴忚鍣?- 鏄剧ず閫氱敤椤甸潰
+            // 其他浏览器 - 显示通用页面（让用户自己选）
             showDefaultPage();
         }
 
-        // 鏄剧ず寰俊椤甸潰
+        // 显示微信页面
         function showWeixinPage() {
             document.getElementById('app').innerHTML = `
                 <div class="header">
@@ -224,22 +225,22 @@
                 </div>
                 <div class="content">
                     <div class="info-item">
-                        <div class="info-icon">馃搷</div>
+                        <div class="info-icon">📍</div>
                         <div class="info-text">
-                            <div class="info-label">鍦板潃</div>
+                            <div class="info-label">地址</div>
                             <div class="info-value">${shopConfig.address}</div>
                         </div>
                     </div>
                     <div class="info-item">
-                        <div class="info-icon">馃摓</div>
+                        <div class="info-icon">📞</div>
                         <div class="info-text">
-                            <div class="info-label">鐢佃瘽</div>
+                            <div class="info-label">电话</div>
                             <div class="info-value">${shopConfig.phone}</div>
                         </div>
                     </div>
                 </div>
                 <div class="menu-section">
-                    <div class="menu-title">馃搵 鎷涚墝鑿滃搧</div>
+                    <div class="menu-title">📋 招牌菜品</div>
                     ${shopConfig.menu.map(item => `
                         <div class="menu-item">
                             <span class="menu-name">${item.name}</span>
@@ -249,19 +250,19 @@
                 </div>
                 <div class="action-buttons">
                     <a href="${shopConfig.meituanUrl}" class="btn btn-meituan">
-                        馃洅 鎶㈣喘缇庡洟鍥㈣喘濂楅
+                        🛒 抢购美团团购套餐
                     </a>
                     <a href="tel:${shopConfig.phone}" class="btn btn-order">
-                        馃摓 鎷ㄦ墦鐢佃瘽璁㈤
+                        📞 拨打电话订餐
                     </a>
                 </div>
                 <div class="footer">
-                    鎵竴鎵紝鑾峰彇鏇村浼樻儬淇℃伅
+                    扫一扫，获取更多优惠信息
                 </div>
             `;
         }
 
-        // 鏄剧ず鎶栭煶椤甸潰
+        // 显示抖音页面
         function showDouyinPage() {
             document.getElementById('app').innerHTML = `
                 <div class="header">
@@ -270,28 +271,28 @@
                 </div>
                 <div class="content">
                     <div class="info-item">
-                        <div class="info-icon">馃搷</div>
+                        <div class="info-icon">📍</div>
                         <div class="info-text">
-                            <div class="info-label">鍦板潃</div>
+                            <div class="info-label">地址</div>
                             <div class="info-value">${shopConfig.address}</div>
                         </div>
                     </div>
                 </div>
                 <div class="action-buttons">
                     <a href="${shopConfig.douyinShopUrl}" class="btn btn-douyin">
-                        馃幍 鎶㈣喘鎶栭煶鍥㈣喘浼樻儬
+                        🎵 抢购抖音团购优惠
                     </a>
                     <a href="${shopConfig.douyinUrl}" class="btn btn-order">
-                        馃憖 杩涘叆鎶栭煶涓婚〉
+                        👀 进入抖音主页
                     </a>
                 </div>
                 <div class="footer">
-                    鎶栭煶鎵爜锛屼笓灞炰紭鎯犵瓑浣犳潵
+                    抖音扫码，专属优惠等你来
                 </div>
             `;
         }
 
-        // 鏄剧ず榛樿椤甸潰
+        // 显示默认页面
         function showDefaultPage() {
             document.getElementById('app').innerHTML = `
                 <div class="header">
@@ -300,22 +301,22 @@
                 </div>
                 <div class="content">
                     <div class="info-item">
-                        <div class="info-icon">馃搷</div>
+                        <div class="info-icon">📍</div>
                         <div class="info-text">
-                            <div class="info-label">鍦板潃</div>
+                            <div class="info-label">地址</div>
                             <div class="info-value">${shopConfig.address}</div>
                         </div>
                     </div>
                     <div class="info-item">
-                        <div class="info-icon">馃摓</div>
+                        <div class="info-icon">📞</div>
                         <div class="info-text">
-                            <div class="info-label">鐢佃瘽</div>
+                            <div class="info-label">电话</div>
                             <div class="info-value">${shopConfig.phone}</div>
                         </div>
                     </div>
                 </div>
                 <div class="menu-section">
-                    <div class="menu-title">馃搵 鎷涚墝鑿滃搧</div>
+                    <div class="menu-title">📋 招牌菜品</div>
                     ${shopConfig.menu.map(item => `
                         <div class="menu-item">
                             <span class="menu-name">${item.name}</span>
@@ -325,19 +326,19 @@
                 </div>
                 <div class="action-buttons">
                     <a href="${shopConfig.meituanUrl}" class="btn btn-meituan">
-                        馃洅 缇庡洟鍥㈣喘
+                        🛒 美团团购
                     </a>
                     <a href="${shopConfig.douyinUrl}" class="btn btn-douyin">
-                        馃幍 鎶栭煶涓婚〉
+                        🎵 抖音主页
                     </a>
                     <a href="tel:${shopConfig.phone}" class="btn btn-order">
-                        馃摓 鐢佃瘽璁㈤
+                        📞 电话订餐
                     </a>
                 </div>
             `;
         }
 
-        // 椤甸潰鍔犺浇瀹屾垚鍚庤嚜鍔ㄦ墽琛?
+        // 页面加载完成后自动执行
         window.onload = autoRedirect;
     </script>
 </body>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>User-Agent 测试</title>
+</head>
+<body>
+    <h1>User-Agent 测试</h1>
+    <p>你的 User-Agent 是：</p>
+    <pre id="ua"></pre>
+    
+    <p>环境检测结果：</p>
+    <ul id="results"></ul>
+    
+    <script>
+        const ua = navigator.userAgent;
+        document.getElementById('ua').textContent = ua;
+        
+        const isWeixin = ua.toLowerCase().indexOf('micromessenger') > -1;
+        const isDouyin = ua.toLowerCase().indexOf('douyin') > -1 || ua.toLowerCase().indexOf('bytedance') > -1;
+        const isAlipay = ua.toLowerCase().indexOf('alipay') > -1;
+        
+        const results = document.getElementById('results');
+        results.innerHTML = `
+            <li>微信: ${isWeixin ? '✅ 是' : '❌ 否'}</li>
+            <li>抖音: ${isDouyin ? '✅ 是' : '❌ 否'}</li>
+            <li>支付宝: ${isAlipay ? '✅ 是' : '❌ 否'}</li>
+        `;
+    </script>
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>铚€搴勮弻姹ょ伀閿?- 鎵爜鐐归</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 100%;
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        .content {
+            padding: 30px 20px;
+        }
+        .info-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 20px;
+        }
+        .info-text {
+            flex: 1;
+        }
+        .info-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 4px;
+        }
+        .info-value {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+        .menu-section {
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        .menu-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+        .menu-name {
+            font-size: 14px;
+            color: #333;
+        }
+        .menu-price {
+            font-size: 14px;
+            color: #ee5a24;
+            font-weight: 600;
+        }
+        .action-buttons {
+            padding: 20px;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            margin-bottom: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn:active {
+            transform: scale(0.98);
+        }
+        .btn-meituan {
+            background: #ff6b2c;
+            color: white;
+        }
+        .btn-douyin {
+            background: #1e1e1e;
+            color: white;
+        }
+        .btn-order {
+            background: #4ecdc4;
+            color: white;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            font-size: 12px;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="app">
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>姝ｅ湪璇嗗埆鎮ㄧ殑璐﹀彿...</p>
+        </div>
+    </div>
+
+    <script>
+        // 妫€娴嬭繍琛岀幆澧?
+        const userAgent = navigator.userAgent.toLowerCase();
+        const isWeixin = userAgent.indexOf('micromessenger') > -1;
+        const isDouyin = userAgent.indexOf('douyin') > -1 || userAgent.indexOf('bytedance') > -1;
+        const isAlipay = userAgent.indexOf('alipay') > -1;
+
+        // 鍟嗗閰嶇疆淇℃伅
+        const shopConfig = {
+            name: '铚€搴勮弻姹ょ伀閿?,
+            address: '娌冲寳鐪侀偄鍙板競鍐呬笜鍘?,
+            phone: '138****8888',
+            description: '姝ｅ畻鑿屾堡鐏攨锛屽吇鐢熷張缇庡懗',
+            menu: [
+                { name: '鎷涚墝鑿屾堡閿呭簳', price: '48鍏? },
+                { name: '鏂伴矞鑲ョ墰', price: '38鍏? },
+                { name: '鎵嬫墦鐗涜倝涓?, price: '28鍏? },
+                { name: '椴滆弻鎷肩洏', price: '32鍏? },
+                { name: '鐗硅壊灏忔枡', price: '6鍏?浣? }
+            ],
+            // 缇庡洟/鎶栭煶璺宠浆閾炬帴锛堥渶瑕佹浛鎹负鐪熷疄閾炬帴锛?
+            meituanUrl: 'https://i.meituan.com/qqq', // 鏇挎崲涓虹湡瀹炵編鍥㈠洟璐摼鎺?
+            douyinUrl: 'https://v.douyin.com/xxxxxx/', // 鏇挎崲涓虹湡瀹炴姈闊充富椤甸摼鎺?
+            douyinShopUrl: 'https://awp-htsaf/e04c4G9/' // 鏇挎崲涓虹湡瀹炴姈闊冲洟璐摼鎺?
+        };
+
+        // 鏍规嵁鐜鑷姩璺宠浆
+        function autoRedirect() {
+            // 鎶栭煶鍐呯疆娴忚鍣?- 璺宠浆鎶栭煶鍥㈣喘
+            if (isDouyin) {
+                showDouyinPage();
+                return;
+            }
+            
+            // 寰俊鍐呯疆娴忚鍣?- 鏄剧ず鐐归椤甸潰
+            if (isWeixin) {
+                showWeixinPage();
+                return;
+            }
+            
+            // 鍏朵粬娴忚鍣?- 鏄剧ず閫氱敤椤甸潰
+            showDefaultPage();
+        }
+
+        // 鏄剧ず寰俊椤甸潰
+        function showWeixinPage() {
+            document.getElementById('app').innerHTML = `
+                <div class="header">
+                    <h1>${shopConfig.name}</h1>
+                    <p>${shopConfig.description}</p>
+                </div>
+                <div class="content">
+                    <div class="info-item">
+                        <div class="info-icon">馃搷</div>
+                        <div class="info-text">
+                            <div class="info-label">鍦板潃</div>
+                            <div class="info-value">${shopConfig.address}</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">馃摓</div>
+                        <div class="info-text">
+                            <div class="info-label">鐢佃瘽</div>
+                            <div class="info-value">${shopConfig.phone}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-section">
+                    <div class="menu-title">馃搵 鎷涚墝鑿滃搧</div>
+                    ${shopConfig.menu.map(item => `
+                        <div class="menu-item">
+                            <span class="menu-name">${item.name}</span>
+                            <span class="menu-price">${item.price}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="action-buttons">
+                    <a href="${shopConfig.meituanUrl}" class="btn btn-meituan">
+                        馃洅 鎶㈣喘缇庡洟鍥㈣喘濂楅
+                    </a>
+                    <a href="tel:${shopConfig.phone}" class="btn btn-order">
+                        馃摓 鎷ㄦ墦鐢佃瘽璁㈤
+                    </a>
+                </div>
+                <div class="footer">
+                    鎵竴鎵紝鑾峰彇鏇村浼樻儬淇℃伅
+                </div>
+            `;
+        }
+
+        // 鏄剧ず鎶栭煶椤甸潰
+        function showDouyinPage() {
+            document.getElementById('app').innerHTML = `
+                <div class="header">
+                    <h1>${shopConfig.name}</h1>
+                    <p>${shopConfig.description}</p>
+                </div>
+                <div class="content">
+                    <div class="info-item">
+                        <div class="info-icon">馃搷</div>
+                        <div class="info-text">
+                            <div class="info-label">鍦板潃</div>
+                            <div class="info-value">${shopConfig.address}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <a href="${shopConfig.douyinShopUrl}" class="btn btn-douyin">
+                        馃幍 鎶㈣喘鎶栭煶鍥㈣喘浼樻儬
+                    </a>
+                    <a href="${shopConfig.douyinUrl}" class="btn btn-order">
+                        馃憖 杩涘叆鎶栭煶涓婚〉
+                    </a>
+                </div>
+                <div class="footer">
+                    鎶栭煶鎵爜锛屼笓灞炰紭鎯犵瓑浣犳潵
+                </div>
+            `;
+        }
+
+        // 鏄剧ず榛樿椤甸潰
+        function showDefaultPage() {
+            document.getElementById('app').innerHTML = `
+                <div class="header">
+                    <h1>${shopConfig.name}</h1>
+                    <p>${shopConfig.description}</p>
+                </div>
+                <div class="content">
+                    <div class="info-item">
+                        <div class="info-icon">馃搷</div>
+                        <div class="info-text">
+                            <div class="info-label">鍦板潃</div>
+                            <div class="info-value">${shopConfig.address}</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">馃摓</div>
+                        <div class="info-text">
+                            <div class="info-label">鐢佃瘽</div>
+                            <div class="info-value">${shopConfig.phone}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-section">
+                    <div class="menu-title">馃搵 鎷涚墝鑿滃搧</div>
+                    ${shopConfig.menu.map(item => `
+                        <div class="menu-item">
+                            <span class="menu-name">${item.name}</span>
+                            <span class="menu-price">${item.price}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="action-buttons">
+                    <a href="${shopConfig.meituanUrl}" class="btn btn-meituan">
+                        馃洅 缇庡洟鍥㈣喘
+                    </a>
+                    <a href="${shopConfig.douyinUrl}" class="btn btn-douyin">
+                        馃幍 鎶栭煶涓婚〉
+                    </a>
+                    <a href="tel:${shopConfig.phone}" class="btn btn-order">
+                        馃摓 鐢佃瘽璁㈤
+                    </a>
+                </div>
+            `;
+        }
+
+        // 椤甸潰鍔犺浇瀹屾垚鍚庤嚜鍔ㄦ墽琛?
+        window.onload = autoRedirect;
+    </script>
+</body>
+</html>

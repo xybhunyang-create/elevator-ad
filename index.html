@@ -198,22 +198,22 @@
             douyinShopUrl: 'https://v.douyin.com/ZhrpJBZ5Tv8/' // 抖音团购
         };
 
-        // 根据环境自动跳转
+        // 根据环境自动跳转 - 无痕中间页
         function autoRedirect() {
             // 抖音内置浏览器 - 跳转抖音团购
             if (isDouyin) {
-                window.location.href = shopConfig.douyinShopUrl;
+                window.location.replace(shopConfig.douyinShopUrl);
                 return;
             }
             
             // 微信内置浏览器 - 跳转草料模板页
             if (isWeixin) {
-                window.location.href = shopConfig.caoliaoUrl;
+                window.location.replace(shopConfig.caoliaoUrl);
                 return;
             }
             
-            // 其他浏览器 - 显示通用页面（让用户自己选）
-            showDefaultPage();
+            // 其他浏览器 - 默认跳转到草料模板页
+            window.location.replace(shopConfig.caoliaoUrl);
         }
 
         // 显示微信页面
